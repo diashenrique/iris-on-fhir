@@ -1,0 +1,10 @@
+<script src="https://cdn.jsdelivr.net/npm/fhirclient@latest/build/fhir-client.min.js"></script>
+<script>
+    FHIR.oauth2.authorize({
+        "client_id": "3rq425elm666gnmp1860li9aej",
+        "clientSecret": "1sqnhbn3opnds7b38a4sl18a55crc38s39d5kq47berdde4phqb9",
+        "scope": "openid profile user/*.*",
+        "redirect_uri": "http://localhost:64755/iris-on-fhir/index.html",
+        "iss": "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2"
+    });
+</script>
