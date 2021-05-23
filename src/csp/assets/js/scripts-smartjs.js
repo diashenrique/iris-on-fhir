@@ -9,12 +9,31 @@ $(document).ajaxError(function () {
 });
 
 $(document).ready(function () {
-    getPatients()
+    expiredTokenWorkaround()
+        .then(getPatients)
         .then(bundle => {
             console.log(bundle);
             populateDatagrid(bundle);
         });
 });
+
+function expiredTokenWorkaround() {
+    return FHIR.oauth2.ready()
+        .then(client => {
+            const accessToken = client.state.tokenResponse.access_token;
+            const refreshToken = client.state.tokenResponse.refresh_token;
+            const expiresAt = client.state.expiresAt || 0;
+
+            if (!accessToken) {
+                window.location.pathname = "/iris-on-fhir/launch.html";
+            }
+            if (accessToken && refreshToken && expiresAt - 10 < Date.now() / 1000) {
+                window.location.pathname = "/iris-on-fhir/launch.html";
+            }
+
+            return;
+        });
+}
 
 function getPatients() {
     return FHIR.oauth2.ready()
