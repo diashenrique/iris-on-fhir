@@ -9,13 +9,24 @@ $(document).ajaxError(function () {
 });
 
 $(document).ready(function () {
-    expiredTokenWorkaround()
-        .then(getPatients)
-        .then(bundle => {
-            console.log(bundle);
-            populateDatagrid(bundle);
+    getFHIRClient()
+        .then(client => {
+            getPatients(client)
+                .then(bundle => {
+                    console.log(bundle);
+                    populateDatagrid(bundle);
+                    return;
+                })
+                .then(() => getAppointments(client));
         });
 });
+
+function getFHIRClient() {
+    // return FHIR.oauth2.ready()
+    //     .then(client => client);
+    return expiredTokenWorkaround()
+        .then(client => client);
+}
 
 function expiredTokenWorkaround() {
     return FHIR.oauth2.ready()
@@ -31,7 +42,7 @@ function expiredTokenWorkaround() {
                 window.location.pathname = "/iris-on-fhir/launch.html";
             }
 
-            return;
+            return client;
         });
 }
 
@@ -91,4 +102,14 @@ function getName(r) {
         }
     }
     return name;
+}
+
+function getAppointments(client) {
+    // const query = new URLSearchParams();
+    // query.set("_sort", "-_lastUpdated");
+    return client.request(`Appointment`)
+        .then(bundle => {
+            console.log(bundle);
+            return bundle;
+        });
 }
