@@ -7,7 +7,7 @@
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <CSPApplication 
-        CookiePath="/csp/irisapp/" 
+        CookiePath="/csp/user/" 
         DefaultTimeout="900" 
         SourcePath="/src/csp" 
         DeployPath="/opt/irisbuild/src/csp/" 
@@ -16,7 +16,7 @@
         Recurse="1" ServeFiles="1" 
         ServeFilesTimeout="3600" 
         UnauthenticatedEnabled="0" 
-        Url="/csp/irisapp" 
+        Url="/csp/user" 
         UseSessionCookie="2"/>
     </Module>
   </Document>
