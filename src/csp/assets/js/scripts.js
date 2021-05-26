@@ -1,93 +1,99 @@
-(function (window, undefined) {
-  'use strict';
+// SMART JS client lib tests (OAuth)
+// (http://docs.smarthealthit.org/client-js)
 
-  var client = fhir({
-    baseUrl: 'https://fhir.lrwvcusn.static-test-account.isccloud.io',
-    headers: {
-      //'x-api-key': '<API_KEY>',
-      'x-api-key': 'piJPZwEl4l3vYXIppt7HL7ZpMOT2Ad7K7lfln6WV',
-      'accept': '*/*'
-    }
-  });
+// enable debug mode in SMART JS client lib
+localStorage.debug = "FHIR.*";
 
-  $('#patientId').on('keypress', function (e) {
-    if (e.which === 13) {
-      fhirTest($('#patientId').val());
-    }
-  });
+$(document).ajaxError(function () {
+  debugger
+});
 
-  function fhirTest(patientId) {
-    $('#patient').text(`Querying patient ${patientId}...`);
-    client.read({
-      type: 'Patient',
-      patient: patientId
-    }).then((res) => {
-      $('#patient').text(JSON.stringify(res, null, 2));
-    }).catch((res) => {
-      $('#patient').text(JSON.stringify(res, null, 2));
+$(document).ready(function () {
+  getFHIRClient()
+    .then(client => {
+      getPatients(client)
+        .then(bundle => {
+          console.log(bundle);
+          return;
+        });
     });
-  }
+});
 
-  function getName(r) {
-    let name = '';
-    if (r.name && r.name.length > 0) {
-      if (r.name[0].given && r.name[0].given.length > 0) {
-        name += `${r.name[0].given[0]} `;
-      }
-      if (r.name[0].family) {
-        name += r.name[0].family;
-      }
-    }
-    return name;
-  }
+function getFHIRClient() {
+  // return FHIR.oauth2.ready()
+  //     .then(client => client);
+  return expiredTokenWorkaround()
+    .then(client => client);
+}
 
-  // Perform a search to retrieve patient list
-  client.search({
-      type: 'Patient',
-      query: {
-        _sort: '-_lastUpdated'
-      }
-    }).then((res) => {
-      const bundle = res.data;
+function expiredTokenWorkaround() {
+  return FHIR.oauth2.ready()
+    .then(client => {
+      const accessToken = client.state.tokenResponse.access_token;
+      const refreshToken = client.state.tokenResponse.refresh_token;
+      const expiresAt = client.state.expiresAt || 0;
 
-      $("#patient-dataTable").DataTable({
-        "processing": true,
-        "data": bundle.entry,
-        "columns": [{
-          "data": "resource.id"
-        }, {
-          "data": "resource.name[0].given"
-        }, {
-          "data": "resource.name[0].family" 
-        }, {
-          "data": "resource.birthDate" 
-        }, {
-          "data": "resource.gender" 
-        }]
-      });
-      console.log(bundle.entry);
+      if (!accessToken) {
+        window.location.pathname = "/iris-on-fhir/launch.html";
+      }
+      if (accessToken && refreshToken && expiresAt - 10 < Date.now() / 1000) {
+        window.location.pathname = "/iris-on-fhir/launch.html";
+      }
 
-      bundle.entry.forEach((patient) => {
-        const patientId = patient.resource.id;
-        const name = getName(patient.resource);
-        const tableLine = '<tr><td>' + patientId + '</td><td>' + name + '</td></tr>';
-        $("#tablePatient").append(tableLine);
-      });
-    })
-    .catch((err) => {
-      // Error responses
-      if (err.status) {
-        console.log(err);
-        console.log('Error', err.status);
-      }
-      // Errors
-      if (err.data && err.data) {
-        console.log('Error', err.data);
-      }
+      return client;
     });
+}
 
+function getPatients() {
+  return FHIR.oauth2.ready()
+    .then(client => {
+      const query = new URLSearchParams();
+      query.set("_sort", "-_lastUpdated");
+      // query.set("_sort", "name");
+      // query.set("_count", 10);
+      return client.request(`Patient?${query}`)
+        .then((bundle) => {
+          $("#patient-dataTable").DataTable({
+            "dom":'<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            "processing": true,
+            "data": bundle.entry,
+            "columns": [{
+              "data": "resource.id"
+            }, {
+              "data": "resource.name[0].given"
+            }, {
+              "data": "resource.name[0].family"
+            }, {
+              "data": "resource.birthDate"
+            }, {
+              "data": "resource.gender"
+            }]
+          });
+          return bundle;
+        })
+        .catch((err) => {
+          // Error responses
+          if (err.status) {
+            console.log(err);
+            console.log('Error', err.status);
+          }
+          // Errors
+          if (err.data && err.data) {
+            console.log('Error', err.data);
+          }
+        });
+    });
+}
 
-
-
-
-})(window);
+function getName(r) {
+  let name = '';
+  if (r.name && r.name.length > 0) {
+    if (r.name[0].given && r.name[0].given.length > 0) {
+      name += `${r.name[0].given[0]} `;
+    }
+    if (r.name[0].family) {
+      name += r.name[0].family;
+    }
+  }
+  return name;
+}

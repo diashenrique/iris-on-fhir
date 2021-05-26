@@ -78,8 +78,7 @@
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item mr-auto align-items-center">
                     <a class="navbar-brand" href="#">
-                        <img src="app-assets/images/logo/IRISonFHIR.png" height="32"
-                            class="brand-logo">
+                        <img src="app-assets/images/logo/IRISonFHIR.png" height="32" class="brand-logo">
                         <h2 class="brand-text">FHIR</h2>
                     </a>
                 </li>
@@ -171,27 +170,12 @@
                 </div>
             </div>
             <div class="content-body">
-                <!-- Kick start -->
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">FHIRaaS simple test</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Get patient ID <input type="text" id="patientId" value="1" />
-                            </p>
-                            <pre id="patient"></pre>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Responsive Datatable -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header border-bottom">
-                                <h4 class="card-title">Responsive Datatable</h4>
+                                <h4 class="card-title">Patient list</h4>
                             </div>
                             <div class="card-datatable">
                                 <table id="patient-dataTable" class="dt-responsive table">
@@ -204,15 +188,6 @@
                                             <th>Gender</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Given Name</th>
-                                            <th>Family Name</th>
-                                            <th>DOB</th>
-                                            <th>Gender</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -253,13 +228,11 @@
     <!-- BEGIN: Theme JS-->
     <script src="app-assets/js/core/app-menu.js"></script>
     <script src="app-assets/js/core/app.js"></script>
-    <!-- <script src="assets/js/jqFhir.js"></script>
-    <script src="assets/js/scripts.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
-    <script src="assets/js/scripts-smartjs.js"></script>
+    <script src="assets/js/scripts.js"></script>
     <!-- END: Theme JS-->
 
-    <!-- BEGIN: Page JS-->
+    <!-- BEGIN: Page JS -->
     <!-- END: Page JS-->
 
     <script>
