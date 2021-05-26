@@ -56,9 +56,13 @@
         "columns": [{
           "data": "resource.id"
         }, {
-          "data": "resource.name[0].given" 
+          "data": "resource.name[0].given"
         }, {
           "data": "resource.name[0].family" 
+        }, {
+          "data": "resource.birthDate" 
+        }, {
+          "data": "resource.gender" 
         }]
       });
       console.log(bundle.entry);
