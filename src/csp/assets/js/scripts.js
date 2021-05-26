@@ -54,13 +54,19 @@ function getPatients() {
       return client.request(`Patient?${query}`)
         .then((bundle) => {
           $("#patient-dataTable").DataTable({
-            "dom":'<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            "dom": '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             "processing": true,
             "data": bundle.entry,
             "columns": [{
               "data": "resource.id"
             }, {
-              "data": "resource.name[0].given"
+              "data": "resource.name[0].given",
+              "render": function (data, type, row, meta) {
+                if (type === 'display') {
+                  data = '<a href="' + row.resource.id + '"><span class="font-weight-bold">' + data + '</span></a>';
+                }
+                return data;
+              }
             }, {
               "data": "resource.name[0].family"
             }, {
