@@ -23,5 +23,10 @@ function expiredTokenWorkaround() {
       }
 
       return client;
+    })
+    .catch(err => {
+        if (err.message === "No 'state' parameter found. Please (re)launch the app.") {
+            window.location.pathname = "/iris-on-fhir/launch.html";
+        }
     });
 }
