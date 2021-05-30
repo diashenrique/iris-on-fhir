@@ -63,7 +63,7 @@ function getPatients() {
               "data": "resource.name[0].given",
               "render": function (data, type, row, meta) {
                 if (type === 'display') {
-                  data = '<a href="' + row.resource.id + '"><span class="font-weight-bold">' + data + '</span></a>';
+                  data = '<a href="patientview.html?pid=' + row.resource.id + '"><span class="font-weight-bold">' + data + '</span></a>';
                 }
                 return data;
               }
