@@ -17,6 +17,11 @@ if ($('html').data('textdirection') == 'rtl') {
   direction = 'rtl';
 }
 
+// calendar callbacks
+window.onAddEvent = (eventData) => { return Promise.resolve() };
+window.onUpdateEvent = (eventData) => { return Promise.resolve() };
+window.onDeleteEvent = (eventId) => { return Promise.resolve() };
+
 if ($('body').attr('data-framework') === 'laravel') {
   assetPath = $('body').attr('data-asset-path');
 }
@@ -158,6 +163,22 @@ function createCalendar(events) {
 
   // Event click function
   function eventClick(info) {
+    if (!eventToUpdate) { // prevent multiple event registration with btnDeleteEvent.on
+      //  Delete Event
+      btnDeleteEvent.on('click', function () {
+        console.log("deleting...");
+        onDeleteEvent(eventToUpdate.id)
+          .then(() => {
+            console.log("deleted");
+            eventToUpdate.remove();
+            // removeEvent(eventToUpdate.id);
+            sidebar.modal('hide');
+            $('.event-sidebar').removeClass('show');
+            $('.app-calendar .body-content-overlay').removeClass('show');
+          });
+      });
+    }
+
     eventToUpdate = info.event;
     if (eventToUpdate.url) {
       info.jsEvent.preventDefault();
@@ -184,15 +205,6 @@ function createCalendar(events) {
     eventToUpdate.extendedProps.guests !== undefined
       ? calendarEditor.val(eventToUpdate.extendedProps.description)
       : null;
-
-    //  Delete Event
-    btnDeleteEvent.on('click', function () {
-      eventToUpdate.remove();
-      // removeEvent(eventToUpdate.id);
-      sidebar.modal('hide');
-      $('.event-sidebar').removeClass('show');
-      $('.app-calendar .body-content-overlay').removeClass('show');
-    });
   }
 
   // Modify sidebar toggler
@@ -332,25 +344,40 @@ function createCalendar(events) {
   // addEvent
   // ------------------------------------------------
   function addEvent(eventData) {
-    calendar.addEvent(eventData);
-    calendar.refetchEvents();
+    console.log("adding...");
+    window.onAddEvent(eventData)
+      .then(() => {
+        console.log("added");
+        calendar.addEvent(eventData);
+        calendar.refetchEvents();
+      });
   }
 
   // ------------------------------------------------
   // updateEvent
   // ------------------------------------------------
   function updateEvent(eventData) {
-    var propsToUpdate = ['id', 'title', 'url'];
-    var extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'];
+    console.log('updating...');
+    window.onUpdateEvent(eventData)
+      .then(() => {
+        console.log('updated')
+        var propsToUpdate = ['id', 'title', 'url'];
+        var extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'];
 
-    updateEventInCalendar(eventData, propsToUpdate, extendedPropsToUpdate);
+        updateEventInCalendar(eventData, propsToUpdate, extendedPropsToUpdate);
+      });
   }
 
   // ------------------------------------------------
   // removeEvent
   // ------------------------------------------------
   function removeEvent(eventId) {
-    removeEventInCalendar(eventId);
+    console.log("deleting...");
+    window.onDeleteEvent(eventId)
+      .then(() => {
+        console.log("deleted");
+        removeEventInCalendar(eventId);
+      });
   }
 
   // ------------------------------------------------
@@ -385,7 +412,12 @@ function createCalendar(events) {
   // (UI) removeEventInCalendar
   // ------------------------------------------------
   function removeEventInCalendar(eventId) {
-    calendar.getEventById(eventId).remove();
+    console.log("deleting...");
+    window.onDeleteEvent(eventId)
+      .then(() => {
+        console.log("deleted");
+        calendar.getEventById(eventId).remove();
+      });
   }
 
   // Add new event
