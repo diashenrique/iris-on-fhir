@@ -30,3 +30,13 @@ function expiredTokenWorkaround() {
         }
     });
 }
+
+function showLoadingModal() {
+  $("#backdrop").modal({
+    backdrop: "static"
+  });
+}
+
+function hideLoadingModal() {
+  $("#backdrop").modal("hide");
+}

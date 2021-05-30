@@ -167,9 +167,11 @@ function createCalendar(events) {
       //  Delete Event
       btnDeleteEvent.on('click', function () {
         console.log("deleting...");
+        showLoadingModal();
         onDeleteEvent(eventToUpdate.id)
           .then(() => {
             console.log("deleted");
+            hideLoadingModal();
             eventToUpdate.remove();
             // removeEvent(eventToUpdate.id);
             sidebar.modal('hide');
@@ -345,9 +347,11 @@ function createCalendar(events) {
   // ------------------------------------------------
   function addEvent(eventData) {
     console.log("adding...");
+    showLoadingModal();
     window.onAddEvent(eventData)
       .then(() => {
         console.log("added");
+        hideLoadingModal();
         calendar.addEvent(eventData);
         calendar.refetchEvents();
       });
@@ -358,9 +362,11 @@ function createCalendar(events) {
   // ------------------------------------------------
   function updateEvent(eventData) {
     console.log('updating...');
+    showLoadingModal();
     window.onUpdateEvent(eventData)
       .then(() => {
-        console.log('updated')
+        console.log('updated');
+        hideLoadingModal();
         var propsToUpdate = ['id', 'title', 'url'];
         var extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'];
 
@@ -373,9 +379,11 @@ function createCalendar(events) {
   // ------------------------------------------------
   function removeEvent(eventId) {
     console.log("deleting...");
+    showLoadingModal();
     window.onDeleteEvent(eventId)
       .then(() => {
         console.log("deleted");
+        hideLoadingModal();
         removeEventInCalendar(eventId);
       });
   }
@@ -413,9 +421,11 @@ function createCalendar(events) {
   // ------------------------------------------------
   function removeEventInCalendar(eventId) {
     console.log("deleting...");
+    showLoadingModal();
     window.onDeleteEvent(eventId)
       .then(() => {
         console.log("deleted");
+        hideLoadingModal();
         calendar.getEventById(eventId).remove();
       });
   }
