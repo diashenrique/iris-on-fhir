@@ -12,6 +12,7 @@ $(document).ready(function () {
         return updateAppointment(eventData)
             .then(console.log)
             .catch(console.error);
+        // return new Promise(r => setTimeout(r, 1000));
     };
     window.onDeleteEvent = (eventId) => {
         console.log('onDeleteEvent', eventId);
@@ -29,16 +30,58 @@ $(document).ready(function () {
                 .then(createEvents)
                 .then(_events => {
                     console.log(_events);
-                    createCalendar(events.concat(_events))
+                    // createCalendar(events.concat(_events));
+                    createCalendar(_events);
                 })
                 .catch(console.error);
+
+            fillPatientDatalist(client)
+            $('#patient').on('keypress', event => {
+                window.lastKeydown = new Date().getTime();
+                setTimeout(() => {
+                    const searchVal = $('#patient').val();
+                    if (!window.lastKeydown || new Date().getTime() - window.lastKeydown > 300) {
+                        fillPatientDatalist(client, searchVal);
+                    }
+                }, 300);
+            });
+            $('#patient').on('change', event => {
+                $('#patientRef').val(getSelectedPatient());
+            });
         })
         .catch(console.error);
 });
 
+function fillPatientDatalist(client, search) {
+    const query = new URLSearchParams();
+    if (search) {
+        query.set("given:contains", search);
+    }
+    // query.set("_count", 10);
+    return client.request(`Patient?${query}`)
+        .then((bundle) => {
+            console.log(bundle)
+            $('#patients').empty();
+            (bundle.entry || []).forEach(element => {
+                $('#patients').append(
+                    `<option 
+                    value="${element.resource.name[0].given[0]}" 
+                    data-value="${element.resource.id}"
+                    data-object="${btoa(JSON.stringify(element.resource))}">${element.resource.identifier[0].value}</option>`
+                );
+            });
+        });
+}
+
+function getSelectedPatient() {
+    return $(`option[value='${$('#patient').val()}']`).data('value');
+}
+
+function getSelectedPatientObject() {
+    return JSON.parse(atob($(`option[value='${$('#patient').val()}']`).data('object')));
+}
+
 function getAppointments(client) {
-    // const query = new URLSearchParams();
-    // query.set("_sort", "-_lastUpdated");
     return client.request(`Appointment`);
 }
 
@@ -65,13 +108,14 @@ function createEvents(bundle) {
             id: appointment.resource.id,
             url: '',
             title: appointment.resource.description,
-            description: appointment.resource.comment,
             start: start,
             end: end,
             allDay: start === end,
             extendedProps: {
                 description: appointment.resource.comment,
-                calendar: 'Business'
+                calendar: 'Business',
+                patientRef: appointment.resource.participant[0].actor.reference,
+                patientName: appointment.resource.participant[0].actor.display
             }
         }
     });
@@ -128,6 +172,11 @@ function setEventDataToResoruce(resource, eventData) {
         resource.id = eventData.id;
     }
 
+    // resource.participant[0].actor.reference = `Patient/${eventData.extendedProps.patientRef}`;
+    // resource.participant[0].actor.display = eventData.extendedProps.patientName;
+    const patient = getSelectedPatientObject();
+    resource.participant[0].actor.reference = `Patient/${patient.id}`;
+    resource.participant[0].actor.display = patient.name[0].given[0];
     resource.description = eventData.title;
     resource.comment = eventData.extendedProps.description;
     if (!resource.comment) {
@@ -284,24 +333,4 @@ function CRUDTest(client) {
                 .then(console.log)
                 .catch(console.error);
         });
-
-    // update the appointment
-    // resource.id = "8116"
-    // resource.description = "Retorno consulta"
-    // resource.requestedPeriod[0].start = '2021-05-30T12:00:00Z';
-    // resource.requestedPeriod[0].end = '2021-05-30T13:00:00Z';
-    // client.update(resource)
-    //     .then(res => {
-    //         debugger
-    //     })
-    //     .catch(() => {
-    //         debugger
-    //     });
-
-    // delete the appointment
-    // client.delete("Appointment/8115")
-    //     .then(() => {
-    //         debugger
-    //     })
-    //     .catch(console.error);
 }

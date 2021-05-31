@@ -50,6 +50,8 @@ function createCalendar(events) {
     cancelBtn = $('.btn-cancel'),
     updateEventBtn = $('.update-event-btn'),
     toggleSidebarBtn = $('.btn-toggle-sidebar'),
+    eventPatientRef = $('#patientRef'),
+    eventPatientName = $('#patient'),
     eventTitle = $('#title'),
     eventLabel = $('#select-label'),
     startDate = $('#start-date'),
@@ -88,16 +90,16 @@ function createCalendar(events) {
 
       return $bullet;
     }
-    eventLabel.wrap('<div class="position-relative"></div>').select2({
-      placeholder: 'Select value',
-      dropdownParent: eventLabel.parent(),
-      templateResult: renderBullets,
-      templateSelection: renderBullets,
-      minimumResultsForSearch: -1,
-      escapeMarkup: function (es) {
-        return es;
-      }
-    });
+    // eventLabel.wrap('<div class="position-relative"></div>').select2({
+    //   placeholder: 'Select value',
+    //   dropdownParent: eventLabel.parent(),
+    //   templateResult: renderBullets,
+    //   templateSelection: renderBullets,
+    //   minimumResultsForSearch: -1,
+    //   escapeMarkup: function (es) {
+    //     return es;
+    //   }
+    // });
   }
 
   // Guests select
@@ -123,16 +125,16 @@ function createCalendar(events) {
 
       return $avatar;
     }
-    eventGuests.wrap('<div class="position-relative"></div>').select2({
-      placeholder: 'Select value',
-      dropdownParent: eventGuests.parent(),
-      closeOnSelect: false,
-      templateResult: renderGuestAvatar,
-      templateSelection: renderGuestAvatar,
-      escapeMarkup: function (es) {
-        return es;
-      }
-    });
+    // eventGuests.wrap('<div class="position-relative"></div>').select2({
+    //   placeholder: 'Select value',
+    //   dropdownParent: eventGuests.parent(),
+    //   closeOnSelect: false,
+    //   templateResult: renderGuestAvatar,
+    //   templateSelection: renderGuestAvatar,
+    //   escapeMarkup: function (es) {
+    //     return es;
+    //   }
+    // });
   }
 
   // Start date picker
@@ -204,9 +206,11 @@ function createCalendar(events) {
     eventToUpdate.extendedProps.guests !== undefined
       ? eventGuests.val(eventToUpdate.extendedProps.guests).trigger('change')
       : null;
-    eventToUpdate.extendedProps.guests !== undefined
+    eventToUpdate.extendedProps.description !== undefined
       ? calendarEditor.val(eventToUpdate.extendedProps.description)
       : null;
+    eventPatientRef.val(eventToUpdate.extendedProps.patientRef);
+    eventPatientName.val(eventToUpdate.extendedProps.patientName);
   }
 
   // Modify sidebar toggler
@@ -252,7 +256,8 @@ function createCalendar(events) {
     // You should make an API call, look into above commented API call for reference
     selectedEvents = events.filter(function (event) {
       // console.log(event.extendedProps.calendar.toLowerCase());
-      return true; // calendars.includes(event.extendedProps.calendar.toLowerCase());
+      // return calendars.includes(event.extendedProps.calendar.toLowerCase());
+      return true;
     });
     // if (selectedEvents.length > 0) {
     successCallback(selectedEvents);
@@ -368,7 +373,7 @@ function createCalendar(events) {
         console.log('updated');
         hideLoadingModal();
         var propsToUpdate = ['id', 'title', 'url'];
-        var extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'];
+        var extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description', 'patientRef', 'patientName'];
 
         updateEventInCalendar(eventData, propsToUpdate, extendedPropsToUpdate);
       });
@@ -405,6 +410,7 @@ function createCalendar(events) {
 
     // --- Set date related props ----- //
     // ? Docs: https://fullcalendar.io/docs/Event-setDates
+    console.log('setDates', updatedEventData.start, updatedEventData.end, { allDay: updatedEventData.allDay})
     existingEvent.setDates(updatedEventData.start, updatedEventData.end, { allDay: updatedEventData.allDay });
 
     // --- Set event's extendedProps ----- //
@@ -445,7 +451,9 @@ function createCalendar(events) {
           location: eventLocation.val(),
           guests: eventGuests.val(),
           calendar: eventLabel.val(),
-          description: calendarEditor.val()
+          description: calendarEditor.val(),
+          patientName: eventPatientName.val(),
+          patientRef: eventPatientRef.val()
         }
       };
       if (eventUrl.val().length) {
@@ -471,7 +479,9 @@ function createCalendar(events) {
           location: eventLocation.val(),
           guests: eventGuests.val(),
           calendar: eventLabel.val(),
-          description: calendarEditor.val()
+          description: calendarEditor.val(),
+          patientName: eventPatientName.val(),
+          patientRef: eventPatientRef.val()
         },
         display: 'block',
         allDay: allDaySwitch.prop('checked') ? true : false

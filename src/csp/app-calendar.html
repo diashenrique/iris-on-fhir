@@ -142,7 +142,7 @@
                                             <span class="align-middle">Add Event</span>
                                         </button>
                                     </div>
-                                    <div class="card-body pb-0">
+                                    <!-- <div class="card-body pb-0">
                                         <h5 class="section-label mb-1">
                                             <span class="align-middle">Filter</span>
                                         </h5>
@@ -178,7 +178,7 @@
                                                 <label class="custom-control-label" for="etc">ETC</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="mt-auto">
                                     <img src="app-assets/images/pages/calendar-illustration.png"
@@ -210,11 +210,21 @@
                                 <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
                                     <form class="event-form needs-validation" data-ajax="false" novalidate>
                                         <div class="form-group">
+                                            <label for="patient" class="form-label">Patient</label>
+                                            <!-- <input type="text" class="form-control" id="patient" name="patient"
+                                                placeholder="Patient" required /> -->
+                                            <!-- <select class="select2-data-ajax form-control" id="patient" name="patient" required></select> -->
+                                            <!-- <select class="select2-data-array form-control" id="select2-array"></select> -->
+                                            <input type="hidden" id="patientRef" name="patientRef">
+                                            <input list="patients" class="form-control" id="patient" name="patient" required>
+                                            <datalist id="patients"></datalist>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="title" class="form-label">Title</label>
                                             <input type="text" class="form-control" id="title" name="title"
                                                 placeholder="Event Title" required />
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="select-label" class="form-label">Label</label>
                                             <select class="select2 select-label form-control w-100" id="select-label"
                                                 name="select-label">
@@ -224,7 +234,7 @@
                                                 <option data-label="success" value="Holiday">Holiday</option>
                                                 <option data-label="info" value="ETC">ETC</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group position-relative">
                                             <label for="start-date" class="form-label">Start Date</label>
                                             <input type="text" class="form-control" id="start-date" name="start-date"
@@ -242,12 +252,16 @@
                                                 <label class="custom-control-label" for="customSwitch3">All Day</label>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <input type="hidden" id="event-url">
+                                        <input type="hidden" id="event-guests">
+                                        <input type="hidden" id="event-location">
+                                        <input type="hidden" id="select-label" value="Business">
+                                        <!-- <div class="form-group">
                                             <label for="event-url" class="form-label">Event URL</label>
                                             <input type="url" class="form-control" id="event-url"
                                                 placeholder="https://www.google.com" />
-                                        </div>
-                                        <div class="form-group select2-primary">
+                                        </div> -->
+                                        <!-- <div class="form-group select2-primary">
                                             <label for="event-guests" class="form-label">Add Guests</label>
                                             <select class="select2 select-add-guests form-control w-100"
                                                 id="event-guests" multiple>
@@ -263,12 +277,12 @@
                                                 <option data-avatar="11-small.png" value="Cheryl May">Cheryl May
                                                 </option>
                                             </select>
-                                        </div>
-                                        <div class="form-group">
+                                        </div> -->
+                                        <!-- <div class="form-group">
                                             <label for="event-location" class="form-label">Location</label>
                                             <input type="text" class="form-control" id="event-location"
                                                 placeholder="Enter Location" />
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label class="form-label">Description</label>
                                             <textarea name="event-description-editor" id="event-description-editor"
@@ -349,8 +363,11 @@
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
     <script src="app-assets/js/scripts/pages/app-calendar-events.js"></script>
     <!-- <script src="app-assets/js/scripts/pages/app-calendar.js"></script> -->
+    <!-- <script src="app-assets/js/scripts/forms/form-select2.js"></script> -->
     <script src="assets/js/commons.js"></script>
     <script src="assets/js/app-calendar.js"></script>
+    <!-- <script src="assets/js/form-select2.js"></script> -->
+    <!-- <script src="assets/js/form-select2 copy.js"></script> -->
     <script src="assets/js/appointments.js"></script>
     <!-- END: Page JS-->
 
