@@ -85,66 +85,12 @@
   ];
   window.dataArray = data
 
-  // $('.select2-data-array').data("select2").dropdown.$search.val()
-  // var newOption = new Option('test', 6, false, false);
-  // $('.select2-data-array').append(newOption).trigger('change');
-  // $('.select2-data-array').val(null).trigger('change');
-  // $('.select2-search__field')[0].addEventListener('keydown', function(event) {console.log(event)});
-  // $('.select2-search__field')[0].addEventListener('keydown', function(event) {console.log(event)}, true);
-
-// $('.select2-data-array').on('select2:open', function (e) {
-//   $('.select2-search__field')[0].addEventListener('keypress', function (event) {
-//     new Promise((resolve, reject) => {
-//       // setTimeout(resolve, 0);
-//       FHIR.oauth2.ready()
-//         .then(client => {
-//           const query = new URLSearchParams();
-//           query.set("_sort", "-_lastUpdated");
-//           return client.request(`Patient?${query}`)
-//             .then((bundle) => {
-//               resolve();
-//             });
-//         });
-//     })
-//       .then(() => {
-//         console.log('aqui')
-//         var newElement = {
-//           id: window.dataArray.length,
-//           text: `item ${window.dataArray.length}`
-//         };
-//         window.dataArray.push(newElement)
-//         var newOption = new Option(newElement.text, newElement.id, false, false);
-//         $('.select2-data-array').append(newOption).trigger('change');
-//         $('.select2-data-array').trigger('select2:close');
-//         $('.select2-data-array').trigger('select2:open');
-//         $('.select2-data-array').trigger('change');
-//       })
-//       .catch(console.error)
-//   });
-// });
-
   selectArray.wrap('<div class="position-relative"></div>').select2({
     dropdownAutoWidth: true,
     dropdownParent: selectArray.parent(),
     width: '100%',
     data: data
   });
-
-// client.state.tokenResponse.access_token
-
-// $.ajax({
-//   url: "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2/Patient?_sort=-_lastUpdated",headers: {"authorization": "Bearer eyJraWQiOiIxZ1RNTUFHU3U1NXJwTFdReUdQUzlJenppbk5icElBUDFHREhtK1ZpUDdvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzNGU0MTFlNS03MThkLTQ4Y2YtODAzNi04OTk3NzNlMDJiNTgiLCJldmVudF9pZCI6IjYyNjU1ZWZkLWU2ZDItNDY1YS05Yjc0LWIyZGU2MDc1NzY0YiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgdXNlclwvKi4qIiwiYXV0aF90aW1lIjoxNjIyNDEwNjE1LCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl92TWFlQkJzQXYiLCJleHAiOjE2MjI0MTQyMTUsImlhdCI6MTYyMjQxMDYxNiwidmVyc2lvbiI6MiwianRpIjoiZGJkYjllZjYtOWQxZS00YTJhLTk2MDMtMzkyOTg2OGMzYjM4IiwiY2xpZW50X2lkIjoiM3JxNDI1ZWxtNjY2Z25tcDE4NjBsaTlhZWoiLCJ1c2VybmFtZSI6ImlyaXNvbmZoaXIifQ.uUwROwzaxJp-dcFP3FVrEKldgyehI4Skeoe8pbtmTicJjTciJNhKcxm71qOaYi0coChPkyNuNDO_zgg0xmVWb771cLLd2AI1bh10Ad8TOihNueRO_WgzVbOTtNygIj1TmxJC7HrlNarIkYeN5DL0jt16f5bQ0J3A_XnktiaxbFxqIar2m5IOJdZq849YAGOzA56vBXG149RaqJc5tiv9uly3h2abx22f07S5I732OschHo6YUhixMumsSC0B0IjzU9kYMOLx7h0rXIoCyMPU5_ZVFcu_gP-LAz0UKr0NJhdF2jb0pMGljqP5gGZzP3UnMmmUNaAycuA8wuPqj7Z6fg"}
-// }).done(function(data) {
-//   console.log(data);
-// });
-
-// FHIR.oauth2.ready().then(client => {
-//   $.ajax({
-//     url: "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2/Patient?_sort=-_lastUpdated",headers: {"authorization": `Bearer ${client.state.tokenResponse.access_token}`}
-//   }).done(function(data) {
-//     console.log(data);
-//   });
-// })
 
   // Loading remote data
   selectAjax.wrap('<div class="position-relative"></div>').select2({
