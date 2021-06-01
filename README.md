@@ -1,11 +1,20 @@
-## intersystems-objectscript-template
-This is a template for InterSystems ObjectScript Github repository.
-The template goes also with a few files which let you immedietly compile your ObjecScript files in InterSystems IRIS Community Edition in a docker container
+# IRIS on FHIR
+
+IRIS on FHIR it's a SMART app to show the potencial of FHIRaaS using SMART JS Client Library
+
+## Description
+
+IRIS on FHIR it's our idea of how easy and simple we can work with FHIR, crafting a great UI to show the power behind FHIRaaS.
+
+We hope that our project makes it easier for everyone to understand; we want to share knowledge and show that something good is not necessarily complicated.
+
+We hope that our project can be used as a base/example for many others, unlocking more and more features.
 
 ## Prerequisites
+
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
 
-## Installation 
+## Installation
 
 Clone/git pull the repo into any local directory
 
@@ -27,38 +36,24 @@ $ docker-compose up -d
 
 ## How to Test it
 
-Open IRIS terminal:
+1. Open in the URL in browser: [http://localhost:64755/iris-on-fhir/launch.html](http://localhost:64755/iris-on-fhir/launch.html)
 
-```
-$ docker-compose exec iris iris session iris
-USER>write ##class(dc.PackageSample.ObjectScript).Test()
-```
-## How to start coding
-This repository is ready to code in VSCode with ObjectScript plugin.
-Install [VSCode](https://code.visualstudio.com/), [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and [ObjectScript](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript) plugin and open the folder in VSCode.
-Open /src/cls/PackageSample/ObjectScript.cls class and try to make changes - it will be compiled in running IRIS docker container.
-![docker_compose](https://user-images.githubusercontent.com/2781759/76656929-0f2e5700-6547-11ea-9cc9-486a5641c51d.gif)
+2. You can take advantage of the VSCode link shortcurts:
 
-Feel free to delete PackageSample folder and place your ObjectScript classes in a form
-/src/Package/Classname.cls
-[Read more about folder setup for InterSystems ObjectScript](https://community.intersystems.com/post/simplified-objectscript-source-folder-structure-package-manager)
+![VS Code](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/vscode.png)
 
-The script in Installer.cls will import everything you place under /src into IRIS.
+## How IRIS on FHIR looks like
 
+The appointments are shown on the calendar view, loading the information through the FHIR resource: Appointment.
 
-## What's inside the repository
+![Appointments Calendar](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/appointments.png)
 
-### Dockerfile
+You also can create new appointments, update, and delete them.
 
-The simplest dockerfile which starts IRIS and imports code from /src folder into it.
-Use the related docker-compose.yml to easily setup additional parametes like port number and where you map keys and host folders.
+![Appointments CRUD](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/newAppointment.png)
 
+## Dream team
 
-### .vscode/settings.json
-
-Settings file to let you immedietly code in VSCode with [VSCode ObjectScript plugin](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript))
-
-### .vscode/launch.json
-Config file if you want to debug with VSCode ObjectScript
-
-[Read about all the files in this artilce](https://community.intersystems.com/post/dockerfile-and-friends-or-how-run-and-collaborate-objectscript-projects-intersystems-iris)
+- [Henrique Dias](https://community.intersystems.com/user/henrique-dias-2)
+- [José Roberto Pereira](https://community.intersystems.com/user/jos%C3%A9-roberto-pereira-0)
+  
