@@ -12,6 +12,10 @@
         "service": "iris",
         "internalPort": 52773
       },
+      "links": {
+        "Portal": "http://localhost:${port}/csp/sys/%25CSP.Portal.Home.zen?$NAMESPACE=%25SYS",
+        "IRIS on FHIR": "http://localhost:${port}/iris-on-fhir/launch.html"
+      },
       "active": true
     },
     "sqltools.connections": [
