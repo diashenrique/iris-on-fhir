@@ -1,10 +1,20 @@
 <script src="https://cdn.jsdelivr.net/npm/fhirclient@latest/build/fhir-client.min.js"></script>
 <script>
-    FHIR.oauth2.authorize({
-        "client_id": "3rq425elm666gnmp1860li9aej",
-        "clientSecret": "1sqnhbn3opnds7b38a4sl18a55crc38s39d5kq47berdde4phqb9",
-        "scope": "openid profile user/*.*",
-        "redirect_uri": "http://localhost:64755/iris-on-fhir/index.html",
-        "iss": "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2"
-    });
+    if (location.hostname === 'iris-on-fhir.contest.community.intersystems.com') {
+        FHIR.oauth2.authorize({
+            "client_id": "3dqoq7q7eevm9c1nguhrm2aeuj",
+            "clientSecret": "1lfijthtij5mquqtfqpbq77oftf46s5g4c9mk9vs0jgh3203avqc",
+            "scope": "openid profile user/*.*",
+            "redirect_uri": "https://iris-on-fhir.contest.community.intersystems.com/iris-on-fhir/patientview.html",
+            "iss": "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2"
+        });
+    } else {
+        FHIR.oauth2.authorize({
+            "client_id": "2u34l3nfaim5m9doouliod2m03",
+            "clientSecret": "1ml3mtdtg4c7tp14nss93tdplhua3ojl0fbdh3ga3bqtgo495f6g",
+            "scope": "openid profile user/*.*",
+            "redirect_uri": "http://localhost:64755/iris-on-fhir/patientview.html",
+            "iss": "https://fhirauth.lrwvcusn.static-test-account.isccloud.io/oauth2"
+        })
+    }
 </script>
