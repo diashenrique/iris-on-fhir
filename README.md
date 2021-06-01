@@ -36,12 +36,16 @@ $ docker-compose up -d
 
 ## How to Test it
 
-1. Open in the URL in browser: [http://localhost:64755/iris-on-fhir/launch.html](http://localhost:64755/iris-on-fhir/launch.html)
+* Open in the URL in browser: [http://localhost:64755/iris-on-fhir/launch.html](http://localhost:64755/iris-on-fhir/launch.html)
 
-2. You can take advantage of the VSCode link shortcurts:
+* You can take advantage of the VSCode link shortcurts:
 
 ![VS Code](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/vscode.png)
 
+* The project it's using the OAuth2 feature, so you'll need an user/password:
+  * user: irisonfhir
+  * password: irisonfhirA1@
+  
 ## How IRIS on FHIR looks like
 
 The appointments are shown on the calendar view, loading the information through the FHIR resource: Appointment.
@@ -54,6 +58,6 @@ You also can create new appointments, update, and delete them.
 
 ## Dream team
 
-- [Henrique Dias](https://community.intersystems.com/user/henrique-dias-2)
-- [José Roberto Pereira](https://community.intersystems.com/user/jos%C3%A9-roberto-pereira-0)
+* [Henrique Dias](https://community.intersystems.com/user/henrique-dias-2)
+* [José Roberto Pereira](https://community.intersystems.com/user/jos%C3%A9-roberto-pereira-0)
   
