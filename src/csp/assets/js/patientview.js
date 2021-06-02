@@ -65,22 +65,23 @@ function getEncounters() {
                     // console.log("getEncounters",bundle);
                     const arrEncounter = bundle.entry.reverse();
                     for (var i = 0; i < arrEncounter.length; i++) {
-                        console.log(i,arrEncounter[i]);
+                        console.log(i, arrEncounter[i]);
                         let reasonText = "";
                         let dtPeriod = "";
                         let strServiceProvider = "";
-                        
+
                         if (arrEncounter[i].resource.hasOwnProperty("reasonCode") === false) {
                             if (arrEncounter[i].resource.hasOwnProperty("type") === true) {
                                 reasonText = arrEncounter[i].resource.type[0].text;
                             }
                         } else {
                             reasonText = arrEncounter[i].resource.reasonCode[0].coding[0].display;
-                            console.log(i,arrEncounter[i].resource.reasonCode[0].coding[0].display,arrEncounter[i].resource.period.start,arrEncounter[i].resource.serviceProvider.display);
+                            console.log(i, arrEncounter[i].resource.reasonCode[0].coding[0].display, arrEncounter[i].resource.period.start, arrEncounter[i].resource.serviceProvider.display);
                         }
-                        
-                        dtPeriod = arrEncounter[i].resource.period.start;
-                        
+
+                        dtPeriod = (arrEncounter[i].resource.period.start).split("T")[0];
+
+
                         if (arrEncounter[i].resource.hasOwnProperty("serviceProvider") === true) {
                             strServiceProvider = arrEncounter[i].resource.serviceProvider.display;
                             // console.log(i,arrEncounter[i].resource.type[0].text,arrEncounter[i].resource.period.start,arrEncounter[i].resource.serviceProvider.display);
@@ -106,4 +107,9 @@ function getEncounters() {
                     }
                 });
         });
+}
+
+function parseISOString(s) {
+    var b = s.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
 }
