@@ -50,12 +50,12 @@ function getPatientDetails() {
 
 function getEncounters() {
     return FHIR.oauth2.ready()
-        .then(client => {            
+        .then(client => {
             const urlParameters = new URLSearchParams(window.location.search);
             const patientId = urlParameters.get("pid");
-            
+
             const query = new URLSearchParams();
-            query.set("patient",`${patientId}`)
+            query.set("patient", `${patientId}`)
             // query.set("_sort", "-_lastUpdated");
             query.set("_sort", "-_id");
             query.set("_count", 3);
@@ -64,11 +64,35 @@ function getEncounters() {
                 .then((bundle) => {
                     // console.log("getEncounters",bundle);
                     const arrEncounter = bundle.entry.reverse();
-                    // console.log("arrEncounter",arrEncounter);
-                    bundle.entry.forEach((encounter, i) => {
-                        console.log(i, encounter.resource.reasonCode[0].coding[0].display);
+                    for (var i = 0; i < arrEncounter.length; i++) {
+                        console.log(i,arrEncounter[i]);
+                        let reasonText = "";
+                        let dtPeriod = "";
+                        let strServiceProvider = "";
                         
-                    });
+                        if (arrEncounter[i].resource.hasOwnProperty("reasonCode") === false) {
+                            if (arrEncounter[i].resource.hasOwnProperty("type") === true) {
+                                reasonText = arrEncounter[i].resource.type[0].text;
+                            }
+                        } else {
+                            reasonText = arrEncounter[i].resource.reasonCode[0].coding[0].display;
+                            console.log(i,arrEncounter[i].resource.reasonCode[0].coding[0].display,arrEncounter[i].resource.period.start,arrEncounter[i].resource.serviceProvider.display);
+                        }
+                        
+                        dtPeriod = arrEncounter[i].resource.period.start;
+                        
+                        if (arrEncounter[i].resource.hasOwnProperty("serviceProvider") === true) {
+                            strServiceProvider = arrEncounter[i].resource.serviceProvider.display;
+                            // console.log(i,arrEncounter[i].resource.type[0].text,arrEncounter[i].resource.period.start,arrEncounter[i].resource.serviceProvider.display);
+                        }
+
+                        let liTimeline1 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
+                        let liTimeline2 = `<h6>${reasonText}</h6><span class="timeline-event-time">${dtPeriod}</span></div>`
+                        let liTimeline3 = `<p>${strServiceProvider}</p></div></li>`
+                        let liTimeline = liTimeline1.concat(liTimeline2).concat(liTimeline3);
+
+                        $("#idTimeline").append(liTimeline);
+                    }
                 })
                 .catch((err) => {
                     // Error responses
