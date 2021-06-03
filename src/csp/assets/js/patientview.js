@@ -8,7 +8,7 @@ $(document).ready(function () {
                     return;
                 })
                 .then(getEncounters)
-                .then(getImmunization)
+                .then(getLaboratory)
                 .then(getClaimsByPatient)
         })
         .catch(console.error);
@@ -166,6 +166,64 @@ function getClaimsByPatient() {
         });
 }
 
+function getLaboratory() {
+    return FHIR.oauth2.ready()
+        .then(client => {
+            const urlParameters = new URLSearchParams(window.location.search);
+            const patientId = urlParameters.get("pid");
+
+            const query = new URLSearchParams();
+            query.set("patient", `${patientId}`)
+            query.set("category", "laboratory")
+            query.set("_sort", "-_id");
+            query.set("_count", 3);
+
+            return client.request(`Observation?${query}`)
+                .then((bundle) => {
+                    // console.log("getLaboratory", bundle);
+                    // console.log("getLaboratory",arrLab);
+                    $("#idQtyLab").text(bundle.total);
+                    let arrLab = bundle.entry.reverse();
+                    if (arrLab.length > 0) {
+                        for (var i = 0; i < arrLab.length; i++) {
+                            // console.log(i, arrLab[i]);
+                            let codeName = arrLab[i].resource.code.text;
+                            let valueQuantity = arrLab[i].resource.valueQuantity.value;
+                            let valueUnit = arrLab[i].resource.valueQuantity.unit;
+                            let dtEffectiveDate = arrLab[i].resource.effectiveDateTime.split("T")[0];
+                            // console.log(i,codeName,valueQuantity,valueUnit,dtEffectiveDate);
+
+                            let liLaboratory1 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
+                            let liLaboratory2 = `<h6>${codeName}</h6><span class="timeline-event-time">${dtEffectiveDate}</span></div>`
+                            let liLaboratory3 = `<p>${valueQuantity} ${valueUnit}</p></div></li>`
+                            let liLaboratory = liLaboratory1.concat(liLaboratory2).concat(liLaboratory3);
+                            $("#idLaboratory").append(liLaboratory);
+                        }
+                    } else {
+                        // let liLaboratory1 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
+                        // let liLaboratory2 = `<h6></h6><span class="timeline-event-time"></span></div><p></p></div></li>`
+                        // let liLaboratory3 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
+                        // let liLaboratory4 = `<h6>NO DATA</h6><span class="timeline-event-time"></span></div><p></p></div></li>`
+                        // let liLaboratory5 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
+                        // let liLaboratory6 = `<h6></h6><span class="timeline-event-time"></span></div><p></p></div></li>`
+                        // let liLaboratory = liLaboratory1.concat(liLaboratory2).concat(liLaboratory3).concat(liLaboratory4).concat(liLaboratory5).concat(liLaboratory6);
+                        // $("#idLaboratory").append(liLaboratory);
+                    }
+                })
+                .catch((err) => {
+                    // Error responses
+                    if (err.status) {
+                        console.log(err);
+                        console.log('Error', err.status);
+                    }
+                    // Errors
+                    if (err.data && err.data) {
+                        console.log('Error', err.data);
+                    }
+                });
+        });
+}
+
 function getImmunization() {
     return FHIR.oauth2.ready()
         .then(client => {
@@ -187,16 +245,16 @@ function getImmunization() {
                             let dtImmunization = "";
                             let strVaccine = "";
                             let stImmunization = "";
-    
+
                             dtImmunization = (arrImmunization[i].resource.occurrenceDateTime).split("T")[0];
                             strVaccine = arrImmunization[i].resource.vaccineCode.text;
                             stImmunization = arrImmunization[i].resource.status;
-    
+
                             let liImmunization1 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
                             let liImmunization2 = `<h6>${strVaccine}</h6><span class="timeline-event-time">${dtImmunization}</span></div>`
                             let liImmunization3 = `<p>${stImmunization}</p></div></li>`
                             let liImmunization = liImmunization1.concat(liImmunization2).concat(liImmunization3);
-    
+
                             $("#idImmunization").append(liImmunization);
                         }
                     } else {
