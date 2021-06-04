@@ -65,7 +65,7 @@ function getEncounters() {
 
             return client.request(`Encounter?${query}`)
                 .then((bundle) => {
-                    // console.log("getEncounters",bundle);
+                    $("#idQtyEncounters").text(bundle.total);
                     let arrEncounter = bundle.entry.reverse();
                     for (var i = 0; i < arrEncounter.length; i++) {
                         // console.log(i, arrEncounter[i]);
@@ -125,30 +125,61 @@ function getClaimsByPatient() {
 
             return client.request(`Claim?${query}`)
                 .then((bundle) => {
+
+                    var arrClaim = bundle.entry;
+                    // console.log(arrClaim);
+
+                    var arrDataClaim = [];
+
+                    for (var i = 0; i < arrClaim.length; i++) {
+                        let itens = arrClaim[i].resource.item.map(function(element, index, array){
+                            var itemClaim = {};
+                            itemClaim ["id"] =  arrClaim[i].resource.id;
+                            itemClaim ["date"] =  arrClaim[i].resource.created;
+                            itemClaim ["provider"] =  arrClaim[i].resource.provider.display;
+                            itemClaim ["coverage"] =  arrClaim[i].resource.insurance[0].coverage.display;
+                            itemClaim ["item"] =  array[index].productOrService.text;
+                            itemClaim ["currency"] =  arrClaim[i].resource.total.currency;
+                            itemClaim ["value"] =  arrClaim[i].resource.total.value;
+                            itemClaim ["status"] =  arrClaim[i].resource.status;
+                            arrDataClaim.push(itemClaim);
+                            return element;
+                        }, 80);
+                    }
+
+                    console.log(arrDataClaim);
+
+
                     $("#claim-dataTable").DataTable({
                         "dom": '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                         "processing": true,
-                        "data": bundle.entry,
+                        "data": arrDataClaim,
                         "order": [
                             [0, "desc"]
                         ],
                         "columns": [{
-                            "data": "resource.id"
+                            "data": "id"
                         }, {
-                            "data": "resource.created",
+                            "data": "date",
                             "render": function (data, type, row, meta) {
                                 return data.split("T")[0];
                             }
                         }, {
-                            "data": "resource.provider.display"
+                            "data": "provider"
                         }, {
-                            "data": "resource.total.currency"
+                            "data": "coverage"
                         }, {
-                            "data": "resource.total.value",
-                            className: "text-right",
-                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
-                        }, {
-                            "data": "resource.status"
+                            "data": "item"
+                        }, 
+                        // {
+                        //     "data": "currency"
+                        // }, {
+                        //     "data": "value",
+                        //     className: "text-right",
+                        //     render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        // }, 
+                        {
+                            "data": "status"
                         }]
                     });
                 })
