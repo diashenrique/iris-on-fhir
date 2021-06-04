@@ -320,17 +320,3 @@ function getAppointmentTemplate() {
         }
     };
 }
-
-function CRUDTest(client) {
-    let resource = getAppointmentTemplate();
-    // create an appointment
-    client.create(resource, { includeResponse: true })
-        .then(() => {
-            debugger
-        })
-        .catch(() => {
-            return client.request('Appointment/8119/_history/1')
-                .then(console.log)
-                .catch(console.error);
-        });
-}
