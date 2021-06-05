@@ -3,7 +3,7 @@
   <Document name="iris-on-fhir.ZPM">
     <Module>
       <Name>iris-on-fhir</Name>
-      <Version>1.0.1</Version>
+      <Version>1.1.1</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <CSPApplication 
