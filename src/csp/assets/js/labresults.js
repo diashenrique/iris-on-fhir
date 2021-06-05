@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var dataPoints = [];
+    // var dataPoints = [];
     getFHIRClient()
         .then((client) => {
             getPatientDetails(client)
@@ -10,7 +10,7 @@ $(document).ready(function () {
                 .then(getLaboratoryTests);
         })
         .catch(console.error);
-    loadChart(dataPoints);
+    // loadChart(dataPoints);
 });
 
 function getPatientDetails() {
@@ -135,43 +135,13 @@ function getLabResult() {
                     }
                 }
                 // console.log("arrDataPoints", arrDataPoints);
-                
+
                 let jsonData = {};
                 jsonData["data"] = arrDataPoints;
                 arrSerie = [];
                 arrSerie.push(jsonData);
+                return arrSerie
                 // console.log(arrSerie);
-                // loadChart(arrSerie);
-
-                var options = {
-                    chart: {
-                        height: 350,
-                        width: "100%",
-                        type: "area",
-                    },
-                    dataLabels: {
-                        enabled: true
-                    },
-                    animations: {
-                        initialAnimation: {
-                            enabled: true
-                        }
-                    },
-                    series: [],
-                    noData: {
-                        text: 'Choose the desired Lab Test...'
-                    }
-                }
-            
-                var chart = new ApexCharts(
-                    document.querySelector("#chartLabResult"),
-                    options
-                );
-                chart.render();
-                chart.updateSeries([{
-                    series: arrSerie
-                  }])
-
             })
             .catch((err) => {
                 // Error responses
@@ -187,33 +157,55 @@ function getLabResult() {
     });
 }
 
-function loadChart(arrSerie) {
-    var options = {
-        chart: {
-            height: 350,
-            width: "100%",
-            type: "area",
-        },
-        dataLabels: {
-            enabled: true
-        },
-        animations: {
-            initialAnimation: {
-                enabled: true
+function loadChart() {
+    getLabResult()
+        .then((resultado) => {
+            var options = {
+                chart: {
+                    height: 350,
+                    width: "100%",
+                    type: "area",
+                },
+                dataLabels: {
+                    enabled: true
+                },
+                animations: {
+                    initialAnimation: {
+                        enabled: false
+                    }
+                },
+                markers: {
+                    size: 0,
+                    style: 'hollow',
+                },
+                xaxis: {
+                    type: 'datetime'
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd MMM yyyy'
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.7,
+                        opacityTo: 0.9,
+                        stops: [0, 100]
+                    }
+                },
+                series: resultado,
+                noData: {
+                    text: 'Choose the desired Lab Test...'
+                }
             }
-        },
-        series: arrSerie,
-        noData: {
-            text: 'Choose the desired Lab Test...'
-        }
-    }
+            var chart = new ApexCharts(document.querySelector("#chartLabResult"), options);
+            chart.render();
+        })
+        .catch(console.error);
 
-    var chart = new ApexCharts(
-        document.querySelector("#chartLabResult"),
-        options
-    );
+    
 
-    chart.render();
 
-    // getLabResult();
 }
