@@ -2,7 +2,7 @@
 
 In the first article, a simple tutorial was help you to set up your FHIRaaS deployment.
 
-Now, let move forward and introduce a JS library to access the FHIR resource.
+Now, let's move forward and introduce a JS library to access the FHIR resource.
 
 In the end, two examples of usage of this library will be presented, exploring the Appointment FHIR resource type.
 
@@ -182,7 +182,7 @@ Here a screencast of the chat bot in action:
 
 ![](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/article1/5KlBjQib9n.gif)
 
-If you'd like more detail on implementation, please checkou the application code.
+If you'd like more detail on implementation, please check out the application code.
 
 # Conclusion
 
