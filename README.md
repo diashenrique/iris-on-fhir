@@ -1,6 +1,6 @@
 # IRIS on FHIR
 
-IRIS on FHIR it's a SMART app to show the potencial of FHIRaaS using SMART JS Client Library
+IRIS on FHIR it's a SMART app to show the potential of FHIRaaS using SMART JS Client Library
 
 ## Description
 
