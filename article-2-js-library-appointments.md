@@ -170,15 +170,15 @@ Here is a screencast of the application running:
 
 Remember, the code exposed here is just the highlights to understand the application. But, if you'd like more details, please, check out the source code.
 
-# Telegram chat bot
+# Telegram bot
 
-As a last demonstration of what cool things you can do with FHIRaaS, I’d like to show a very simple Telegram chat bot.
+As a last demonstration of what cool things you can do with FHIRaaS, I’d like to show a very simple Telegram bot.
 
 I based this feature fully in works of [Nikolay Soloviev](https://community.intersystems.com/post/sending-alerts-ensemble-telegram) and [Sergey Mikhailenko](https://openexchange.intersystems.com/package/appmsw-telestat). In the Nikolay's article you can checkout how to create the bot in Telegram. Also check out  Sergey Mikhailenko application in order to get more information on Telegram bots.
 
 As the hard work was already done by Nikolay and Serguey, I just added an extra layer of code. This layer grabs the patient’s identifier and the appointment date and time, from Telegram users in a simple chat interaction with no NLP features. After grabbing such information, a FHIRaaS endpoint is called to post a new appointment.
 
-Here a screencast of the chat bot in action:
+Here a screencast of the bot in action:
 
 ![](https://raw.githubusercontent.com/diashenrique/iris-on-fhir/master/image/article1/5KlBjQib9n.gif)
 
