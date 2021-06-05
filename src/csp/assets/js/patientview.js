@@ -22,8 +22,7 @@ function getPatientDetails() {
 
             const urlParameters = new URLSearchParams(window.location.search);
             const patientId = urlParameters.get("pid");
-            // query.set("_sort", "name");
-            // query.set("_count", 10);
+
             return client.request(`Patient/${patientId}`)
                 .then((bundle) => {
                     const patientName = bundle.name[0].given[0] + " " + bundle.name[0].family
@@ -59,7 +58,6 @@ function getEncounters() {
 
             const query = new URLSearchParams();
             query.set("patient", `${patientId}`)
-            // query.set("_sort", "-_lastUpdated");
             query.set("_sort", "-_id");
             query.set("_count", 3);
 
@@ -121,14 +119,10 @@ function getClaimsByPatient() {
             const query = new URLSearchParams();
             query.set("patient", `${patientId}`)
             query.set("_sort", "created");
-            // query.set("_sort", "-_lastUpdated");
 
             return client.request(`Claim?${query}`)
                 .then((bundle) => {
-
                     var arrClaim = bundle.entry;
-                    // console.log(arrClaim);
-
                     var arrDataClaim = [];
 
                     for (var i = 0; i < arrClaim.length; i++) {
@@ -146,9 +140,6 @@ function getClaimsByPatient() {
                             return element;
                         }, 80);
                     }
-
-                    console.log(arrDataClaim);
-
 
                     $("#claim-dataTable").DataTable({
                         "dom": '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
@@ -211,18 +202,16 @@ function getLaboratory() {
 
             return client.request(`Observation?${query}`)
                 .then((bundle) => {
-                    // console.log("getLaboratory", bundle);
-                    // console.log("getLaboratory",arrLab);
+                    $("#idQtyLab").attr("onclick", `window.open("labresults.html?pid=${patientId}", '_blank');`);
+                    $("#idQtyLab").attr("style", "cursor: pointer;");
                     $("#idQtyLab").text(bundle.total);
-                    let arrLab = bundle.entry.reverse();
+                    let arrLab = bundle.entry.reverse();                    
                     if (arrLab.length > 0) {
                         for (var i = 0; i < arrLab.length; i++) {
-                            // console.log(i, arrLab[i]);
                             let codeName = arrLab[i].resource.code.text;
                             let valueQuantity = arrLab[i].resource.valueQuantity.value;
                             let valueUnit = arrLab[i].resource.valueQuantity.unit;
                             let dtEffectiveDate = arrLab[i].resource.effectiveDateTime.split("T")[0];
-                            // console.log(i,codeName,valueQuantity,valueUnit,dtEffectiveDate);
 
                             let liLaboratory1 = '<li class="timeline-item"><span class="timeline-point timeline-point-indicator"></span><div class="timeline-event"><div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">'
                             let liLaboratory2 = `<h6>${codeName}</h6><span class="timeline-event-time">${dtEffectiveDate}</span></div>`
