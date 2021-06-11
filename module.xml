@@ -3,14 +3,14 @@
   <Document name="iris-on-fhir.ZPM">
     <Module>
       <Name>iris-on-fhir</Name>
-      <Version>1.1.1</Version>
+      <Version>1.1.2</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <CSPApplication 
         CookiePath="/iris-on-fhir/" 
         DefaultTimeout="900" 
         SourcePath="/src/csp" 
-        DeployPath="/opt/irisbuild/src/csp/" 
+        DeployPath="${cspdir}/csp/${namespace}/"
         MatchRoles=":{$dbrole}" 
         PasswordAuthEnabled="1" 
         Recurse="1" ServeFiles="1" 
